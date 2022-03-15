@@ -1,13 +1,28 @@
 <template>
   <div class="user-profile">
-    <h1 class="user-profile__username">@{{ user.username }}</h1>
-    <div class="user-profile__follower-count"><strong>Followers: </strong> {{ followers }}</div>
+    <div class="user-profile__user-panel">
+      <h1 class="user-profile__username">@{{ user.username }}</h1>
+      <div v-if="user.isAdmin" class="user-profile__admin-badge">Admin</div>
+      <div class="user-profile__follower-count"><strong>Followers: </strong> {{ followers }}</div>
+    </div>
+    <div class="user-profile__twoots-wrapper">
+      <TwootItem
+        v-for="twoot in user.twoots"
+        :key="twoot.id"
+        :username="user.username"
+        :twoot="twoot"
+        @favorite="toggleFavorite"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import TwootItem from './TwootItem.vue';
+
 export default {
   name: 'UserProfile',
+  components: { TwootItem },
   data() {
     return {
       followers: 0,
@@ -18,6 +33,10 @@ export default {
         lastName: 'Lin',
         email: 'pokailin@example.com',
         isAdmin: true,
+        twoots: [
+          { id: 1, content: 'Twotter is amazing!' },
+          { id: 2, content: "Don't forget to subscribe to the earth is square!" },
+        ],
       },
     };
   },
@@ -37,6 +56,9 @@ export default {
     followUser() {
       this.followers++;
     },
+    toggleFavorite(id) {
+      console.log(`Favorited twoot #${id}`);
+    },
   },
   mounted() {
     this.followUser();
@@ -45,4 +67,38 @@ export default {
 </script>
 
 <style>
+.user-profile {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  max-width: 100%;
+  padding: 50px 5%;
+}
+
+.user-profile__user-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: 50px;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #dfe3e8;
+}
+
+.user-profile__admin-badge {
+  background: rebeccapurple;
+  color: white;
+  border-radius: 5px;
+  margin-right: auto;
+  padding: 0 10px;
+}
+
+.user-profile__twoots-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+h1 {
+  margin: 0;
+}
 </style>
