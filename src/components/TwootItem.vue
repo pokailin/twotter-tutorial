@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .twoot-item {
   padding: 20px;
   background-color: #fff;
@@ -39,13 +39,13 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.25s ease;
+
+  .twoot-item__user {
+    font-weight: bold;
+  }
 }
 
 .twoot-item:hover {
   transform: scale(1.03, 1.03);
-}
-
-.twoot-item__user {
-  font-weight: bold;
 }
 </style>
