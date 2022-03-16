@@ -40,12 +40,12 @@ export default {
   cursor: pointer;
   transition: all 0.25s ease;
 
+  &:hover {
+    transform: scale(1.03, 1.03);
+  }
+
   .twoot-item__user {
     font-weight: bold;
   }
-}
-
-.twoot-item:hover {
-  transform: scale(1.03, 1.03);
 }
 </style>

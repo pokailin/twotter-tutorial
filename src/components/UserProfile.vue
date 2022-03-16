@@ -4,9 +4,25 @@
       <h1 class="user-profile__username">@{{ user.username }}</h1>
       <div v-if="user.isAdmin" class="user-profile__admin-badge">Admin</div>
       <div class="user-profile__follower-count"><strong>Followers: </strong> {{ followers }}</div>
-      <form class="user-profile__create-twoot" @submit.prevent="createNewTwoot">
-        <label for="newTwoot"><strong>New Twoot</strong></label>
+      <form
+        class="user-profile__create-twoot"
+        @submit.prevent="createNewTwoot"
+        :class="{ '--exceeded-character-count': exceededCharacterCount }"
+      >
+        <label for="newTwoot">
+          <strong>New Twoot</strong>
+          <span class="new-twoot__character-count">
+            ({{ newTwootCharacterCount }}/{{ twootCharacterLimit }})
+          </span>
+        </label>
         <textarea id="newTwoot" rows="4" v-model="newTwootContent"></textarea>
+
+        <p
+          :class="{ 'exceeded-char-limit-message': exceededCharacterCount }"
+          v-if="exceededCharacterCount"
+        >
+          Twoots may not exceed 180 characters...
+        </p>
 
         <div class="user-profile__create-twoot-type">
           <label for="newTwootType"><strong>Type</strong></label>
@@ -17,7 +33,7 @@
           </select>
         </div>
 
-        <button>Twoot!</button>
+        <button :disabled="exceededCharacterCount">Twoot!</button>
       </form>
     </div>
     <div class="user-profile__twoots-wrapper">
@@ -42,6 +58,7 @@ export default {
     return {
       newTwootContent: '',
       selectedTwootType: 'instant',
+      twootCharacterLimit: 180,
       twootTypes: [
         { value: 'instant', name: 'Instant Twoot' },
         {
@@ -72,8 +89,11 @@ export default {
     },
   },
   computed: {
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`;
+    newTwootCharacterCount() {
+      return this.newTwootContent.length;
+    },
+    exceededCharacterCount() {
+      return this.newTwootContent.length > this.twootCharacterLimit;
     },
   },
   methods: {
@@ -144,8 +164,28 @@ export default {
     }
 
     .user-profile__create-twoot {
-      border-top: 1px solid #dfe3e8;
       padding-top: 20px;
+
+      textarea {
+        padding: 4px 8px;
+      }
+
+      &.--exceeded-character-count {
+        textarea {
+          color: red;
+        }
+      }
+
+      .new-twoot__character-count {
+        color: #888;
+        font-size: 0.7rem;
+      }
+
+      .exceeded-char-limit-message {
+        color: red;
+        font-size: 0.65rem;
+        margin: 0;
+      }
     }
   }
 
