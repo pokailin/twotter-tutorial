@@ -32,12 +32,12 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 export default {
   name: 'CreateTwootPanel',
   setup(_, context) {
-    const state = reactive({
+    const state = ref({
       twootCharacterLimit: 180,
       newTwootContent: '',
       selectedTwootType: 'instant',
@@ -47,15 +47,15 @@ export default {
       ],
     });
 
-    const newTwootCharacterCount = computed(() => state.newTwootContent.length);
+    const newTwootCharacterCount = computed(() => state.value.newTwootContent.length);
     const exceededCharacterCount = computed(
-      () => state.newTwootContent.length > state.twootCharacterLimit
+      () => state.value.newTwootContent.length > state.value.twootCharacterLimit
     );
 
     function createNewTwoot() {
-      if (state.newTwootContent && state.selectedTwootType !== 'draft') {
-        context.emit('add-twoot', state.newTwootContent);
-        state.newTwootContent = '';
+      if (state.value.newTwootContent && state.value.selectedTwootType !== 'draft') {
+        context.emit('add-twoot', state.value.newTwootContent);
+        state.value.newTwootContent = '';
       }
     }
 

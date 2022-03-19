@@ -2,27 +2,35 @@
   <div class="user-profile">
     <div class="user-profile__sidebar">
       <div class="user-profile__user-panel">
-        <h1 class="user-profile__username">@{{ user.username }}</h1>
-        <div v-if="user.isAdmin" class="user-profile__admin-badge">Admin</div>
-        <div class="user-profile__follower-count"><strong>Followers: </strong> {{ followers }}</div>
+        <h1 class="user-profile__username">@{{ state.user.username }}</h1>
+        <div v-if="state.user.isAdmin" class="user-profile__admin-badge">Admin</div>
+        <div class="user-profile__follower-count">
+          <strong>Followers: </strong> {{ state.followers }}
+        </div>
       </div>
       <CreateTwootPanel @add-twoot="addTwoot" />
     </div>
     <div class="user-profile__twoots-wrapper">
-      <TwootItem v-for="twoot in user.twoots" :key="twoot.id" :username="user.username" :twoot="twoot" />
+      <TwootItem
+        v-for="twoot in state.user.twoots"
+        :key="twoot.id"
+        :username="state.user.username"
+        :twoot="twoot"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
 import TwootItem from './TwootItem.vue';
 import CreateTwootPanel from './CreateTwootPanel.vue';
 
 export default {
   name: 'UserProfile',
   components: { TwootItem, CreateTwootPanel },
-  data() {
-    return {
+  setup() {
+    const state = ref({
       followers: 0,
       user: {
         id: 1,
@@ -36,13 +44,14 @@ export default {
           { id: 2, content: "Don't forget to subscribe to the earth is square!" },
         ],
       },
-    };
-  },
-  methods: {
-    addTwoot(newTwootContent) {
-      const twoots = this.user.twoots;
-      this.user.twoots = [...twoots, { id: twoots.length + 1, content: newTwootContent }];
-    },
+    });
+
+    function addTwoot(newTwootContent) {
+      const twoots = state.value.user.twoots;
+      state.value.user.twoots = [...twoots, { id: twoots.length + 1, content: newTwootContent }];
+    }
+
+    return { state, addTwoot };
   },
 };
 </script>
