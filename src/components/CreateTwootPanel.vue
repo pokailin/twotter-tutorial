@@ -2,15 +2,15 @@
   <form
     class="create-twoot-panel"
     @submit.prevent="createNewTwoot"
-    :class="{ '--exceeded-char-limit': exceededCharCount }"
+    :class="{ '--exceeded-char-limit': exceededCharacterCount }"
   >
     <label for="newTwoot">
       <strong>New Twoot</strong>
       <span class="new-twoot__character-count">
-        ({{ newTwootCharacterCount }}/{{ twootCharacterLimit }})
+        ({{ newTwootCharacterCount }}/{{ state.twootCharacterLimit }})
       </span>
     </label>
-    <textarea id="newTwoot" rows="4" v-model="newTwootContent"></textarea>
+    <textarea id="newTwoot" rows="4" v-model="state.newTwootContent"></textarea>
 
     <p :class="{ 'exceeded-char-limit-message': exceededCharacterCount }" v-if="exceededCharacterCount">
       Twoots may not exceed 180 characters...
@@ -19,8 +19,8 @@
     <div class="create-twoot-panel__submit">
       <div class="create-twoot-type">
         <label for="newTwootType"><strong>Type</strong></label>
-        <select id="newTwootType" v-model="selectedTwootType">
-          <option v-for="option in twootTypes" :key="option.value" :value="option.value">
+        <select id="newTwootType" v-model="state.selectedTwootType">
+          <option v-for="option in state.twootTypes" :key="option.value" :value="option.value">
             {{ option.name }}
           </option>
         </select>
@@ -32,10 +32,12 @@
 </template>
 
 <script>
+import { reactive, computed } from 'vue';
+
 export default {
   name: 'CreateTwootPanel',
-  data() {
-    return {
+  setup(_, context) {
+    const state = reactive({
       twootCharacterLimit: 180,
       newTwootContent: '',
       selectedTwootType: 'instant',
@@ -43,23 +45,21 @@ export default {
         { value: 'instant', name: 'Instant Twoot' },
         { value: 'draft', name: 'Draft' },
       ],
-    };
-  },
-  computed: {
-    newTwootCharacterCount() {
-      return this.newTwootContent.length;
-    },
-    exceededCharacterCount() {
-      return this.newTwootContent.length > this.twootCharacterLimit;
-    },
-  },
-  methods: {
-    createNewTwoot() {
-      if (this.newTwootContent && this.selectedTwootType !== 'draft') {
-        this.$emit('add-twoot', this.newTwootContent);
-        this.newTwootContent = '';
+    });
+
+    const newTwootCharacterCount = computed(() => state.newTwootContent.length);
+    const exceededCharacterCount = computed(
+      () => state.newTwootContent.length > state.twootCharacterLimit
+    );
+
+    function createNewTwoot() {
+      if (state.newTwootContent && state.selectedTwootType !== 'draft') {
+        context.emit('add-twoot', state.newTwootContent);
+        state.newTwootContent = '';
       }
-    },
+    }
+
+    return { state, newTwootCharacterCount, exceededCharacterCount, createNewTwoot };
   },
 };
 </script>
@@ -117,6 +117,17 @@ export default {
       background-color: rebeccapurple;
       color: white;
       font-weight: 700;
+      cursor: pointer;
+
+      &:hover,
+      &:active {
+        background-color: rgb(118, 67, 168);
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: auto;
+      }
     }
   }
 }
