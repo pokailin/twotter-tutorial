@@ -22,28 +22,27 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import TwootItem from './TwootItem.vue';
-import CreateTwootPanel from './CreateTwootPanel.vue';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { users } from '@/assets/users';
+import TwootItem from '../components/TwootItem.vue';
+import CreateTwootPanel from '../components/CreateTwootPanel.vue';
 
 export default {
   name: 'UserProfile',
   components: { TwootItem, CreateTwootPanel },
   setup() {
+    const route = useRoute();
+    const userId = computed(() => route.params.userId);
+
+    let user;
+    if (userId.value != undefined) {
+      user = users.find((user) => userId.value == user.id);
+    }
+
     const state = ref({
       followers: 0,
-      user: {
-        id: 1,
-        username: '_PokaiLin',
-        firstName: 'Pokai',
-        lastName: 'Lin',
-        email: 'pokailin@example.com',
-        isAdmin: true,
-        twoots: [
-          { id: 1, content: 'Twotter is amazing!' },
-          { id: 2, content: "Don't forget to subscribe to the earth is square!" },
-        ],
-      },
+      user,
     });
 
     function addTwoot(newTwootContent) {
@@ -51,7 +50,7 @@ export default {
       state.value.user.twoots = [...twoots, { id: twoots.length + 1, content: newTwootContent }];
     }
 
-    return { state, addTwoot };
+    return { state, addTwoot, userId, user };
   },
 };
 </script>

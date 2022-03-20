@@ -1,20 +1,20 @@
 <template>
   <div id="app">
     <nav>
-      <div class="navigation__logo">Twotter</div>
+      <router-link to="/">
+        <div class="navigation__logo">Twotter</div>
+      </router-link>
       <div class="navigation__user">{{ state.user.username }}</div>
     </nav>
-    <UserProfile />
+    <router-view />
   </div>
 </template>
 
 <script>
 import { ref } from '@vue/reactivity';
-import UserProfile from './components/UserProfile.vue';
 
 export default {
   name: 'App',
-  components: { UserProfile },
   setup() {
     const state = ref({ user: { username: '_Pokailin' } });
 
