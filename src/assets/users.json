@@ -11,6 +11,54 @@
                 { "id": 1, "content": "Twotter is amazing" },
                 { "id": 2, "content": "Don't forget to subscribe to The Earth is Square" }
             ]
+        },
+        {
+            "id": 2,
+            "username": "_KungFuKetchup",
+            "firstName": "Popeye",
+            "lastName": "Pie",
+            "email": "popeyepie@example.com",
+            "isAdmin": true,
+            "twoots": [
+                { "id": 1, "content": "Twotter is amazing" },
+                { "id": 2, "content": "Don't forget to subscribe to The Earth is Square" }
+            ]
+        },
+        {
+            "id": 3,
+            "username": "_PokaiLin",
+            "firstName": "Pokai",
+            "lastName": "Lin",
+            "email": "pokailin@example.com",
+            "isAdmin": true,
+            "twoots": [
+                { "id": 1, "content": "Twotter is amazing" },
+                { "id": 2, "content": "Don't forget to subscribe to The Earth is Square" }
+            ]
+        },
+        {
+            "id": 4,
+            "username": "_PokaiLin",
+            "firstName": "Pokai",
+            "lastName": "Lin",
+            "email": "pokailin@example.com",
+            "isAdmin": true,
+            "twoots": [
+                { "id": 1, "content": "Twotter is amazing" },
+                { "id": 2, "content": "Don't forget to subscribe to The Earth is Square" }
+            ]
+        },
+        {
+            "id": 5,
+            "username": "_PokaiLin",
+            "firstName": "Pokai",
+            "lastName": "Lin",
+            "email": "pokailin@example.com",
+            "isAdmin": true,
+            "twoots": [
+                { "id": 1, "content": "Twotter is amazing" },
+                { "id": 2, "content": "Don't forget to subscribe to The Earth is Square" }
+            ]
         }
     ]
 }
