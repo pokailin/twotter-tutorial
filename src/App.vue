@@ -4,21 +4,23 @@
       <router-link to="/">
         <div class="navigation__logo">Twotter</div>
       </router-link>
-      <div class="navigation__user">{{ state.user.username }}</div>
+      <div class="navigation__user">{{ user?.username ?? 'No User' }}</div>
     </nav>
     <router-view />
   </div>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { computed } from '@vue/runtime-core';
+import { useStore } from 'vuex';
 
 export default {
   name: 'App',
   setup() {
-    const state = ref({ user: { username: '_Pokailin' } });
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
 
-    return { state };
+    return { user };
   },
 };
 </script>
